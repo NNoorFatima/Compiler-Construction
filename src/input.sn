@@ -1,0 +1,15 @@
+
+poora d=5!
+poora q=3!
+poora main() {
+    poora x, a = 2.05464     , b = 3, c = 5!
+    x = a + b * c!
+    bol hi 
+    :p
+	This is a multi-line comment.
+	It spans multiple lines.
+	:p
+    out("The value of x is %d", x)!
+    
+    wafis 0!
+}
