@@ -1,4 +1,5 @@
 package work;
+
 import java.util.Objects;
 
 public class Token {
@@ -21,13 +22,10 @@ public class Token {
         return value;
     }
 
-    @Override
     public String toString() {
         return "Token{" + "type=" + type + ", value='" + value + "'}";
     }
 
-    // ✅ Fix: Override equals() & hashCode() for correct unique counting
-    @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
@@ -35,7 +33,6 @@ public class Token {
         return type == token.type && Objects.equals(value, token.value);
     }
 
-    @Override
     public int hashCode() {
         return Objects.hash(type, value);
     }

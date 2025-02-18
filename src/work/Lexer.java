@@ -1,21 +1,55 @@
 package work;
+
 import java.util.*;
 import java.util.regex.*;
 
 public class Lexer {
-    private static final String KEYWORDS = "\\b(poora|out|in|adha|HN|bakk|ek|wafis)\\b";
-    private static final String IDENTIFIER = "\\b[a-z][a-z0-9]*\\b";
-    private static final String NUMBER = "\\b[0-9]+(\\.[0-9]{1,5})?\\b";
-    private static final String STRING = "\"[^\"]*\"";
-    private static final String OPERATOR = "[=+\\-*/%]";
-    private static final String PUNCTUATOR = "[(){}!,]";
-    private static final String COMMENT_SINGLE = "\\bbol\\b.*";  
-    private static final String COMMENT_MULTI = ":p[\\s\\S]*?:p";  
+    public static final String KEYWORDS = "\\b(poora|out|in|adha|HN|bakk|ek|wafis)\\b";
+    public static final String IDENTIFIER = "\\b[a-z][a-z]*\\b";
+    public static final String NUMBER = "[0-9]+(\\.[0-9]+)?([eE][-+]?[0-9]+)?"; 
+    public static final String OPERATOR = "[=+\\-*/%]";
+    public static final String STRING = "\"[^\"]*\"";
+    public static final String PUNCTUATOR = "[(){}!,]";
+    public static final String COMMENT_SINGLE = "\\byap\\b.*";  
+    public static final String COMMENT_MULTI = ":p[\\s\\S]*?:p";  
 
     private static final Pattern TOKEN_PATTERN = Pattern.compile(
         COMMENT_MULTI + "|" + COMMENT_SINGLE + "|" + KEYWORDS + "|" + IDENTIFIER + "|" + 
         NUMBER + "|" + STRING + "|" + OPERATOR + "|" + PUNCTUATOR
     );
+
+    // Getter methods for each constant
+    public static String GEtKeyword() {
+        return KEYWORDS;
+    }
+
+    public static String GEtIdentifier() {
+        return IDENTIFIER;
+    }
+
+    public static String GEtNumber() {
+        return NUMBER;
+    }
+
+    public static String GEtOperator() {
+        return OPERATOR;
+    }
+
+    public static String GEtString() {
+        return STRING;
+    }
+
+    public static String GEtPunctuator() {
+        return PUNCTUATOR;
+    }
+
+    public static String GEtCommentSingle() {
+        return COMMENT_SINGLE;
+    }
+
+    public static String GEtCommentMulti() {
+        return COMMENT_MULTI;
+    }
 
     public List<Token> tokenize(String input) {
         List<Token> tokens = new ArrayList<>();
@@ -43,6 +77,6 @@ public class Lexer {
             }
         }
 
-        return tokens; // ✅ Fix: Ensure it never returns null
+        return tokens; 
     }
 }
