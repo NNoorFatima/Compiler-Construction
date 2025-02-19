@@ -2,7 +2,7 @@ package work;
 
 import java.util.*;
 import java.util.regex.*;
-
+		
 public class Lexer {
     public static final String KEYWORDS = "\\b(poora|out|in|adha|HN|bakk|ek|wafis)\\b";
     public static final String IDENTIFIER = "\\b[a-z][a-z]*\\b";

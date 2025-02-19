@@ -113,7 +113,7 @@ public class Main {
             System.out.println("Error reading file: " + e.getMessage());
         }
     }
-
+		
     // Build NFA for Keywords
     public static NFA buildKeywordNFA() {
         String keywordsPattern = Lexer.GEtKeyword(); // Using the getter method from Lexer

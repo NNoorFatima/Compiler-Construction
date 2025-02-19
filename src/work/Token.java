@@ -1,7 +1,7 @@
 package work;
 
 import java.util.Objects;
-
+		
 public class Token {
     public enum Type { KEYWORD, IDENTIFIER, NUMBER, STRING, OPERATOR, PUNCTUATOR, COMMENT, ERROR, EOF }
 
