@@ -2,7 +2,7 @@ package work;
 
 import java.util.*;
 import java.util.regex.*;
-		
+
 public class Lexer {
     public static final String KEYWORDS = "\\b(poora|out|in|adha|HN|bakk|ek|wafis)\\b";
     public static final String IDENTIFIER = "\\b[a-z][a-z]*\\b";
@@ -54,9 +54,24 @@ public class Lexer {
     public List<Token> tokenize(String input) {
         List<Token> tokens = new ArrayList<>();
         Matcher matcher = TOKEN_PATTERN.matcher(input);
+        int lineNumber = 1;
+
+        // Track the tokens that are successfully matched
+        int lastEnd = 0;
 
         while (matcher.find()) {
             String token = matcher.group();
+            
+            //  Check if any part of input is skipped (unmatched tokens)
+            if (matcher.start() > lastEnd) {
+                String invalidToken = input.substring(lastEnd, matcher.start()).trim();
+                if (!invalidToken.isEmpty()) {
+                    System.out.println("Syntax Error at line " + lineNumber + ": Invalid token '" + invalidToken + "'");
+                    System.exit(1);
+                }
+            }
+            
+            lastEnd = matcher.end();
 
             if (token.matches(COMMENT_MULTI) || token.matches(COMMENT_SINGLE)) {
                 tokens.add(new Token(Token.Type.COMMENT, "COMMENT"));
@@ -73,10 +88,26 @@ public class Lexer {
             } else if (token.matches(PUNCTUATOR)) {
                 tokens.add(new Token(Token.Type.PUNCTUATOR, token));
             } else {
-                tokens.add(new Token(Token.Type.ERROR, token));
+                System.out.println("Syntax Error: Invalid token '" + token + "'");
+                System.exit(1);
+            }
+
+            //  Update line number if token contains a newline
+            if (token.contains("\n")) {
+                lineNumber++;
             }
         }
 
-        return tokens; 
+        //  Final check for trailing unmatched input
+        if (lastEnd < input.length()) {
+            String invalidToken = input.substring(lastEnd).trim();
+            if (!invalidToken.isEmpty()) {
+                System.out.println("Syntax Error at line " + lineNumber + ": Invalid token '" + invalidToken + "'");
+                System.exit(1);
+            }
+        }
+
+        return tokens;
     }
+
 }

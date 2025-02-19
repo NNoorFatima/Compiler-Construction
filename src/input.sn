@@ -1,14 +1,16 @@
 
-poora d=5!
+poora wer=8!
 poora main() {
+	adha a=1!
     poora x, a = 2.05464     , b = 3, c = 5!
+    poora bolr=123e4!
     x = a + b * c!
     yap hi 
     :p
-	This is a multi-line comment.
-	It spans multiple lines.
+	this is a multi-line comment.
+	tt spans multiple lines.
 	:p
-    out("The value of x is %d", x)!
+    out("the value of x is %d", x)!
     
     wafis 0!
 }
