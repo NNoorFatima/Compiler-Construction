@@ -48,13 +48,13 @@ public class Main {
         System.out.println("\n");
 
         // ✅ **New Step: Convert NFA to DFA**
-        System.out.println("\n✅ Converting Combined NFA to DFA...");
+        System.out.println("\n Converting Combined NFA to DFA...");
         DFA dfa = new DFA(combinedNFA);
 
         // ✅ **New Step: Print DFA Transition Table**
-        System.out.println("\n✅ Printing DFA Transition Table...");
+        System.out.println("\n Printing DFA Transition Table...");
         dfa.printDFA();
-
+        System.out.println("\n ");
         // ✅ **Continue Existing Code Below**
         String relativePath = "D:\\eclispe\\Compiler-Construction\\src\\input.sn";
         File file = new File(relativePath);

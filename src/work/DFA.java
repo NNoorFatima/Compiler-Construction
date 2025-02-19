@@ -100,7 +100,21 @@ class DFA {
         // ✅ Collect transitions
         for (DFAState state : dfaStates.values()) {
             for (Map.Entry<Character, DFAState> entry : state.transitions.entrySet()) {
-                transitions.add(String.format("s%d  -- '%c' --> s%d", state.id, entry.getKey(), entry.getValue().id));
+                String transitionInfo = String.format(
+                    "s%d  -- '%c' --> s%d%s", 
+                    state.id, 
+                    entry.getKey(), 
+                    entry.getValue().id,
+                    entry.getValue().isFinal ? " [Final State]":""
+                );
+                transitions.add(transitionInfo);
+            }
+        }
+
+        // ✅ Ensure final states are explicitly printed even if they have no outgoing transitions
+        for (DFAState state : dfaStates.values()) {
+        	if (state.isFinal && state.transitions.isEmpty()) {
+                transitions.add(String.format("s%d [Final]", state.id));
             }
         }
 

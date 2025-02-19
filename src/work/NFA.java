@@ -34,7 +34,8 @@ class NFA {
 //        return new NFA(newStart, newEnd);
 //    }
     public static NFA union(NFA... nfas) {
-        if (nfas.length == 0) return null; // No NFAs to merge
+        if (nfas.length == 0) 
+        	return null; // No NFAs to merge
 
         State newStart = new State(stateCounter++);
         State newEnd = new State(stateCounter++);
@@ -42,17 +43,22 @@ class NFA {
         for (NFA nfa : nfas) {
             newStart.addTransition('ε', nfa.startState);
             nfa.finalState.addTransition('ε', newEnd);
+            nfa.finalState.isFinal = false;
         }
-
-        newEnd.isFinal = true;
-        return new NFA(newStart, newEnd);
+        
+        newEnd.isFinal= true;
+        NFA result = new NFA(newStart, newEnd);
+        result.finalState = newEnd;
+        return result;
     }
 
 
     public static NFA concatenate(NFA nfa1, NFA nfa2) {
         nfa1.finalState.addTransition('ε', nfa2.startState);
         nfa1.finalState.isFinal = false; // Make intermediate state non-final
-        return new NFA(nfa1.startState, nfa2.finalState);
+        NFA result = new NFA(nfa1.startState, nfa2.finalState);
+        result.finalState = nfa2.finalState;
+        return result;
     }
 
     public static NFA kleeneStar(NFA nfa) {
@@ -63,7 +69,7 @@ class NFA {
         newStart.addTransition('ε', newEnd);
         nfa.finalState.addTransition('ε', nfa.startState);
         nfa.finalState.addTransition('ε', newEnd);
-        
+        nfa.finalState.isFinal = false;
         newEnd.isFinal = true;
         return new NFA(newStart, newEnd);
     }
@@ -76,7 +82,7 @@ class NFA {
         newStart.addTransition('ε', nfa.startState);  // Must match at least once
         nfa.finalState.addTransition('ε', newEnd);    // Accepting transition
         nfa.finalState.addTransition('ε', nfa.startState);  // Loop back for repetition
-        
+        nfa.finalState.isFinal = false;
         newEnd.isFinal = true;
         return new NFA(newStart, newEnd);
     }
@@ -90,7 +96,7 @@ class NFA {
         newStart.addTransition('ε', newEnd);  // OR directly to accepting state (skip)
         
         nfa.finalState.addTransition('ε', newEnd);  // NFA final state connects to new end
-        
+        nfa.finalState.isFinal = false;
         newEnd.isFinal = true;
         return new NFA(newStart, newEnd);
     }
