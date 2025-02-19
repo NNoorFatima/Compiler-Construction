@@ -12,9 +12,9 @@ class NFA {
         this.finalState = end;
     }
 
-    public static NFA createSimpleNFA(char symbol) {
-        State start = new State(stateCounter++);
-        State end = new State(stateCounter++);
+    public static NFA createSimpleNFA(char symbol,String type) {
+        State start = new State(stateCounter++,type);
+        State end = new State(stateCounter++,type);
         start.addTransition(symbol, end);
         end.isFinal = true;
         return new NFA(start, end);

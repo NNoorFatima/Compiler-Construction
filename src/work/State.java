@@ -14,6 +14,12 @@ class State {
         this.isFinal = false;
         this.tokenType = null;  // Default to null
     }
+    public State(int id, String Tk) {
+        this.id = id;
+        this.transitions = new HashMap<>();
+        this.isFinal = false;
+        this.tokenType = Tk;  // Default to null
+    }
 
     // ✅ Overloaded Constructor to set `isFinal` and `tokenType`
     public State(int id, boolean isFinal, String tokenType) {
@@ -26,6 +32,7 @@ class State {
     public void addTransition(char symbol, State state) {
         transitions.putIfAbsent(symbol, new ArrayList<>());
         transitions.get(symbol).add(state);
+        
     }
 
     // ✅ Modified `display()` to show `tokenType`

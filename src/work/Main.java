@@ -128,9 +128,9 @@ public class Main {
 
             for (char c : keyword.toCharArray()) {
                 if (wordNFA == null) {
-                    wordNFA = NFA.createSimpleNFA(c);
+                    wordNFA = NFA.createSimpleNFA(c,"keyword");
                 } else {
-                    wordNFA = NFA.concatenate(wordNFA, NFA.createSimpleNFA(c));
+                    wordNFA = NFA.concatenate(wordNFA, NFA.createSimpleNFA(c,"keyword"));
                 }
             }
 
@@ -143,19 +143,19 @@ public class Main {
     public static NFA buildIdentifierNFA() {
         // Identifier pattern: [a-z][a-z]*
         NFA firstLetter = NFA.union(
-            NFA.createSimpleNFA('a'), NFA.createSimpleNFA('b'),
-            NFA.createSimpleNFA('c'), NFA.createSimpleNFA('d'),
-            NFA.createSimpleNFA('e'), NFA.createSimpleNFA('f'),
-            NFA.createSimpleNFA('g'), NFA.createSimpleNFA('h'),
-            NFA.createSimpleNFA('i'), NFA.createSimpleNFA('j'),
-            NFA.createSimpleNFA('k'), NFA.createSimpleNFA('l'),
-            NFA.createSimpleNFA('m'), NFA.createSimpleNFA('n'),
-            NFA.createSimpleNFA('o'), NFA.createSimpleNFA('p'),
-            NFA.createSimpleNFA('q'), NFA.createSimpleNFA('r'),
-            NFA.createSimpleNFA('s'), NFA.createSimpleNFA('t'),
-            NFA.createSimpleNFA('u'), NFA.createSimpleNFA('v'),
-            NFA.createSimpleNFA('w'), NFA.createSimpleNFA('x'),
-            NFA.createSimpleNFA('y'), NFA.createSimpleNFA('z')
+            NFA.createSimpleNFA('a',"identifier"), NFA.createSimpleNFA('b',"identifier"),
+            NFA.createSimpleNFA('c',"identifier"), NFA.createSimpleNFA('d',"identifier"),
+            NFA.createSimpleNFA('e',"identifier"), NFA.createSimpleNFA('f',"identifier"),
+            NFA.createSimpleNFA('g',"identifier"), NFA.createSimpleNFA('h',"identifier"),
+            NFA.createSimpleNFA('i',"identifier"), NFA.createSimpleNFA('j',"identifier"),
+            NFA.createSimpleNFA('k',"identifier"), NFA.createSimpleNFA('l',"identifier"),
+            NFA.createSimpleNFA('m',"identifier"), NFA.createSimpleNFA('n',"identifier"),
+            NFA.createSimpleNFA('o',"identifier"), NFA.createSimpleNFA('p',"identifier"),
+            NFA.createSimpleNFA('q',"identifier"), NFA.createSimpleNFA('r',"identifier"),
+            NFA.createSimpleNFA('s',"identifier"), NFA.createSimpleNFA('t',"identifier"),
+            NFA.createSimpleNFA('u',"identifier"), NFA.createSimpleNFA('v',"identifier"),
+            NFA.createSimpleNFA('w',"identifier"), NFA.createSimpleNFA('x',"identifier"),
+            NFA.createSimpleNFA('y',"identifier"), NFA.createSimpleNFA('z',"identifier")
         );
 
         // Repeat for additional lowercase letters [a-z]*
@@ -224,7 +224,7 @@ public class Main {
 
         while (matcher.find()) {
             String punctuator = matcher.group();
-            NFA punctuatorNFA = NFA.createSimpleNFA(punctuator.charAt(0)); // Each punctuator is a single character NFA
+            NFA punctuatorNFA = NFA.createSimpleNFA(punctuator.charAt(0),"punctuator"); // Each punctuator is a single character NFA
 
             result = (result == null) ? punctuatorNFA : NFA.union(result, punctuatorNFA);
         }
@@ -235,42 +235,42 @@ public class Main {
     // Build NFA for Strings
     public static NFA buildStringNFA() {
         // Start and End Quote
-        NFA quote = NFA.createSimpleNFA('\"');
+        NFA quote = NFA.createSimpleNFA('\"',"String");
 
         // Valid string characters: a-z, A-Z, 0-9, punctuation, space
         NFA validChar = NFA.union(
-            NFA.createSimpleNFA('a'), NFA.createSimpleNFA('b'),
-            NFA.createSimpleNFA('c'), NFA.createSimpleNFA('d'),
-            NFA.createSimpleNFA('e'), NFA.createSimpleNFA('f'),
-            NFA.createSimpleNFA('g'), NFA.createSimpleNFA('h'),
-            NFA.createSimpleNFA('i'), NFA.createSimpleNFA('j'),
-            NFA.createSimpleNFA('k'), NFA.createSimpleNFA('l'),
-            NFA.createSimpleNFA('m'), NFA.createSimpleNFA('n'),
-            NFA.createSimpleNFA('o'), NFA.createSimpleNFA('p'),
-            NFA.createSimpleNFA('q'), NFA.createSimpleNFA('r'),
-            NFA.createSimpleNFA('s'), NFA.createSimpleNFA('t'),
-            NFA.createSimpleNFA('u'), NFA.createSimpleNFA('v'),
-            NFA.createSimpleNFA('w'), NFA.createSimpleNFA('x'),
-            NFA.createSimpleNFA('y'), NFA.createSimpleNFA('z'),
-            NFA.createSimpleNFA('0'), NFA.createSimpleNFA('1'),
-            NFA.createSimpleNFA('2'), NFA.createSimpleNFA('3'),
-            NFA.createSimpleNFA('4'), NFA.createSimpleNFA('5'),
-            NFA.createSimpleNFA('6'), NFA.createSimpleNFA('7'),
-            NFA.createSimpleNFA('8'), NFA.createSimpleNFA('9'),
-            NFA.createSimpleNFA('!'), NFA.createSimpleNFA('@'),
-            NFA.createSimpleNFA('#'), NFA.createSimpleNFA('$'),
-            NFA.createSimpleNFA('%'), NFA.createSimpleNFA('^'),
-            NFA.createSimpleNFA('&'), NFA.createSimpleNFA('*'),
-            NFA.createSimpleNFA('('), NFA.createSimpleNFA(')'),
-            NFA.createSimpleNFA('-'), NFA.createSimpleNFA('_'),
-            NFA.createSimpleNFA('+'), NFA.createSimpleNFA('='),
-            NFA.createSimpleNFA('{'), NFA.createSimpleNFA('}'),
-            NFA.createSimpleNFA('['), NFA.createSimpleNFA(']'),
-            NFA.createSimpleNFA(','), NFA.createSimpleNFA('.'),
-            NFA.createSimpleNFA('?'), NFA.createSimpleNFA('/'),
-            NFA.createSimpleNFA('\\'), NFA.createSimpleNFA('|'),
-            NFA.createSimpleNFA(' '),  // Space inside string
-            NFA.createSimpleNFA(':')   // Colon for file paths
+            NFA.createSimpleNFA('a',"String"), NFA.createSimpleNFA('b',"String"),
+            NFA.createSimpleNFA('c',"String"), NFA.createSimpleNFA('d',"String"),
+            NFA.createSimpleNFA('e',"String"), NFA.createSimpleNFA('f',"String"),
+            NFA.createSimpleNFA('g',"String"), NFA.createSimpleNFA('h',"String"),
+            NFA.createSimpleNFA('i',"String"), NFA.createSimpleNFA('j',"String"),
+            NFA.createSimpleNFA('k',"String"), NFA.createSimpleNFA('l',"String"),
+            NFA.createSimpleNFA('m',"String"), NFA.createSimpleNFA('n',"String"),
+            NFA.createSimpleNFA('o',"String"), NFA.createSimpleNFA('p',"String"),
+            NFA.createSimpleNFA('q',"String"), NFA.createSimpleNFA('r',"String"),
+            NFA.createSimpleNFA('s',"String"), NFA.createSimpleNFA('t',"String"),
+            NFA.createSimpleNFA('u',"String"), NFA.createSimpleNFA('v',"String"),
+            NFA.createSimpleNFA('w',"String"), NFA.createSimpleNFA('x',"String"),
+            NFA.createSimpleNFA('y',"String"), NFA.createSimpleNFA('z',"String"),
+            NFA.createSimpleNFA('0',"String"), NFA.createSimpleNFA('1',"String"),
+            NFA.createSimpleNFA('2',"String"), NFA.createSimpleNFA('3',"String"),
+            NFA.createSimpleNFA('4',"String"), NFA.createSimpleNFA('5',"String"),
+            NFA.createSimpleNFA('6',"String"), NFA.createSimpleNFA('7',"String"),
+            NFA.createSimpleNFA('8',"String"), NFA.createSimpleNFA('9',"String"),
+            NFA.createSimpleNFA('!',"String"), NFA.createSimpleNFA('@',"String"),
+            NFA.createSimpleNFA('#',"String"), NFA.createSimpleNFA('$',"String"),
+            NFA.createSimpleNFA('%',"String"), NFA.createSimpleNFA('^',"String"),
+            NFA.createSimpleNFA('&',"String"), NFA.createSimpleNFA('*',"String"),
+            NFA.createSimpleNFA('(',"String"), NFA.createSimpleNFA(')',"String"),
+            NFA.createSimpleNFA('-',"String"), NFA.createSimpleNFA('_',"String"),
+            NFA.createSimpleNFA('+',"String"), NFA.createSimpleNFA('=',"String"),
+            NFA.createSimpleNFA('{',"String"), NFA.createSimpleNFA('}',"String"),
+            NFA.createSimpleNFA('[',"String"), NFA.createSimpleNFA(']',"String"),
+            NFA.createSimpleNFA(',',"String"), NFA.createSimpleNFA('.',"String"),
+            NFA.createSimpleNFA('?',"String"), NFA.createSimpleNFA('/',"String"),
+            NFA.createSimpleNFA('\\',"String"), NFA.createSimpleNFA('|',"String"),
+            NFA.createSimpleNFA(' ',"String"),  // Space inside string
+            NFA.createSimpleNFA(':',"String")   // Colon for file paths
         );
 
         // Repeat any valid character inside the string
@@ -306,9 +306,9 @@ public class Main {
         // ✅ Loop through all digits ('0' to '9') and create an NFA
         for (char digit = '0'; digit <= '9'; digit++) {
             if (digitNFA == null) {
-                digitNFA = NFA.createSimpleNFA(digit);
+                digitNFA = NFA.createSimpleNFA(digit,"Number");
             } else {
-                digitNFA = NFA.union(digitNFA, NFA.createSimpleNFA(digit));
+                digitNFA = NFA.union(digitNFA, NFA.createSimpleNFA(digit,"Number"));
             }
         }
 
@@ -316,13 +316,13 @@ public class Main {
         NFA numberNFA = NFA.kleenePlus(digitNFA);  // At least one digit required
 
         // ✅ Step 3: Handle optional decimal part `(\\.[0-9]+)?`
-        NFA dot = NFA.createSimpleNFA('.');  // Decimal point
+        NFA dot = NFA.createSimpleNFA('.',"Number");  // Decimal point
         NFA decimalPart = NFA.concatenate(dot, NFA.kleenePlus(digitNFA));  // `.123`, `3.14`
         
         // ✅ Step 4: Handle optional exponent part `([eE][-+]?[0-9]+)?`
-        NFA ePart = NFA.union(NFA.createSimpleNFA('e'), NFA.createSimpleNFA('E')); // `e` or `E`
+        NFA ePart = NFA.union(NFA.createSimpleNFA('e',"Number"), NFA.createSimpleNFA('E',"Number")); // `e` or `E`
         
-        NFA sign = NFA.union(NFA.createSimpleNFA('+'), NFA.createSimpleNFA('-'));  // `+` or `-`
+        NFA sign = NFA.union(NFA.createSimpleNFA('+',"Number"), NFA.createSimpleNFA('-',"Number"));  // `+` or `-`
         NFA signedExponent = NFA.concatenate(NFA.optional(sign), NFA.kleenePlus(digitNFA)); // `e+10`, `e-3`
         
         NFA exponentPart = NFA.concatenate(ePart, signedExponent);  // Full exponent handling
@@ -338,12 +338,12 @@ public class Main {
     
     public static NFA buildSoperatorNFA() {
         // Operator pattern: [=+\\-*/%]
-        NFA equal = NFA.createSimpleNFA('=');
-        NFA plus = NFA.createSimpleNFA('+');
-        NFA minus = NFA.createSimpleNFA('-');
-        NFA multiply = NFA.createSimpleNFA('*');
-        NFA divide = NFA.createSimpleNFA('/');
-        NFA modulus = NFA.createSimpleNFA('%');
+        NFA equal = NFA.createSimpleNFA('=',"Operator");
+        NFA plus = NFA.createSimpleNFA('+',"Operator");
+        NFA minus = NFA.createSimpleNFA('-',"Operator");
+        NFA multiply = NFA.createSimpleNFA('*',"Operator");
+        NFA divide = NFA.createSimpleNFA('/',"Operator");
+        NFA modulus = NFA.createSimpleNFA('%',"Operator");
 
         // Union of all operators
         NFA operatorNFA = NFA.union(equal, NFA.union(plus, NFA.union(minus, NFA.union(multiply, NFA.union(divide, modulus)))));
@@ -353,12 +353,12 @@ public class Main {
 
     public static NFA buildSinglecommentNFA() {
         // Single-line comment pattern: \\byap\\b.*
-        NFA commentKeyword = NFA.createSimpleNFA('y');  // Starting character of 'yap' 
-        NFA moreChars = NFA.createSimpleNFA('a');  // Subsequent 'a' 
-        NFA finalChar = NFA.createSimpleNFA('p');  // Final 'p' of 'yap'
+        NFA commentKeyword = NFA.createSimpleNFA('y',"Comment");  // Starting character of 'yap' 
+        NFA moreChars = NFA.createSimpleNFA('a',"Comment");  // Subsequent 'a' 
+        NFA finalChar = NFA.createSimpleNFA('p',"Comment");  // Final 'p' of 'yap'
 
         NFA commentStart = NFA.concatenate(NFA.concatenate(commentKeyword, moreChars), finalChar);
-        NFA anyChar = NFA.createSimpleNFA('.'); // Any character in the comment
+        NFA anyChar = NFA.createSimpleNFA('.',"Comment"); // Any character in the comment
         NFA repeat = NFA.kleeneStar(anyChar);  // Zero or more characters after the comment start
 
         // Concatenate comment start -> zero or more characters in the comment
@@ -367,14 +367,14 @@ public class Main {
 
     public static NFA buildMulticommentNFA() {
         // Multi-line comment pattern: :p[\\s\\S]*?:p
-        NFA startComment = NFA.createSimpleNFA(':');
-        NFA pStart = NFA.createSimpleNFA('p'); // Comment start ':p'
+        NFA startComment = NFA.createSimpleNFA(':',"Comment");
+        NFA pStart = NFA.createSimpleNFA('p',"Comment"); // Comment start ':p'
 
-        NFA spaceOrAnyChar = NFA.createSimpleNFA('.');  // Match any character or whitespace
+        NFA spaceOrAnyChar = NFA.createSimpleNFA('.',"Comment");  // Match any character or whitespace
         NFA commentBody = NFA.kleeneStar(spaceOrAnyChar);  // Zero or more characters in comment
 
-        NFA endComment = NFA.createSimpleNFA(':');
-        NFA pEnd = NFA.createSimpleNFA('p'); // Comment end ':p'
+        NFA endComment = NFA.createSimpleNFA(':',"Comment");
+        NFA pEnd = NFA.createSimpleNFA('p',"Comment"); // Comment end ':p'
 
         // Concatenate startComment + commentBody + endComment
         NFA result = NFA.concatenate(startComment, NFA.concatenate(pStart, NFA.concatenate(commentBody, NFA.concatenate(endComment, pEnd))));
