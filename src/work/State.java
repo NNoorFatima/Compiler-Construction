@@ -5,23 +5,21 @@ class State {
     int id;
     Map<Character, List<State>> transitions;
     boolean isFinal;
-    String tokenType;  // ✅ Added tokenType field
+    String tokenType;  
 
-    // ✅ Updated Constructor
+    
     public State(int id) {
         this.id = id;
         this.transitions = new HashMap<>();
         this.isFinal = false;
-        this.tokenType = null;  // Default to null
+        this.tokenType = null;  
     }
     public State(int id, String Tk) {
         this.id = id;
         this.transitions = new HashMap<>();
         this.isFinal = false;
-        this.tokenType = Tk;  // Default to null
+        this.tokenType = Tk;  
     }
-
-    // ✅ Overloaded Constructor to set `isFinal` and `tokenType`
     public State(int id, boolean isFinal, String tokenType) {
         this.id = id;
         this.transitions = new HashMap<>();
@@ -35,7 +33,6 @@ class State {
         
     }
 
-    // ✅ Modified `display()` to show `tokenType`
 //    public void display() {
 //        for (Map.Entry<Character, List<State>> entry : transitions.entrySet()) {
 //            for (State state : entry.getValue()) {
@@ -55,7 +52,6 @@ class State {
 //            char transitionChar = entry.getKey();
 //            List<State> states = entry.getValue();
 //
-//            // ✅ Sort destination states by ID
 //            states.sort(Comparator.comparingInt(s -> s.id));
 //
 //            for (State state : states) {
@@ -68,7 +64,6 @@ class State {
 //            }
 //        }
 //
-//        // ✅ Sort transitions safely
 ////        transitionsList.sort((s1, s2) -> {
 ////            try {
 ////                // ✅ Extract numbers from "State X -- 'a' --> State Y"
@@ -83,12 +78,12 @@ class State {
 ////                String[] transitionParts1 = parts1[1].split(" --> State ");
 ////                String[] transitionParts2 = parts2[1].split(" --> State ");
 ////
-////                if (transitionParts1.length < 2 || transitionParts2.length < 2) return 0; // ✅ Avoid crash
+////                if (transitionParts1.length < 2 || transitionParts2.length < 2) return 0; 
 ////
 ////                char transitionChar1 = transitionParts1[0].trim().charAt(1); // ✅ Extract transition character
 ////                char transitionChar2 = transitionParts2[0].trim().charAt(1);
 ////
-////                int destination1 = Integer.parseInt(transitionParts1[1].trim());  // ✅ Extract destination state ID
+////                int destination1 = Integer.parseInt(transitionParts1[1].trim());  
 ////                int destination2 = Integer.parseInt(transitionParts2[1].trim());
 ////
 ////                // ✅ Sort based on Source ID → Destination ID → Transition Character
@@ -104,9 +99,7 @@ class State {
 //            transitionsList.add("State " + id + " [Final: " + (tokenType != null ? tokenType : "UNKNOWN") + "]");
 //        }
 //
-//        // ✅ Sort transitions safely
 //        transitionsList.sort(Comparator.naturalOrder());
-//        // ✅ Print sorted transitions
 //        for (String transition : transitionsList) {
 //            System.out.println(transition);
 //        }
@@ -119,7 +112,7 @@ class State {
             char transitionChar = entry.getKey();
             List<State> states = entry.getValue();
 
-            // ✅ Sort destination states by ID
+            // Sort  ID
             states.sort(Comparator.comparingInt(s -> s.id));
 
             for (State state : states) {
@@ -132,15 +125,13 @@ class State {
             }
         }
 
-        // ✅ Always print final states, even if they have outgoing transitions
+        //
         if (isFinal) { 
             transitionsList.add("State " + id + " [Final: " + (tokenType != null ? tokenType : "UNKNOWN") + "]");
         }
 
-        // ✅ Sort transitions safely
+       
         transitionsList.sort(Comparator.naturalOrder());
-
-        // ✅ Print sorted transitions
         for (String transition : transitionsList) {
             System.out.println(transition);
         }

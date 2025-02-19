@@ -92,12 +92,9 @@ class DFA {
     }
 
     public void printDFA() {
-        System.out.println("\n📌 DFA Transition Table (Sorted):");
+        System.out.println("\n DFA Transition Table (Sorted):");
 
-        // ✅ Store transitions in a list
         List<String> transitions = new ArrayList<>();
-
-        // ✅ Collect transitions
         for (DFAState state : dfaStates.values()) {
             for (Map.Entry<Character, DFAState> entry : state.transitions.entrySet()) {
                 String transitionInfo = String.format(
@@ -110,22 +107,20 @@ class DFA {
                 transitions.add(transitionInfo);
             }
         }
-
-        // ✅ Ensure final states are explicitly printed even if they have no outgoing transitions
         for (DFAState state : dfaStates.values()) {
         	if (state.isFinal && state.transitions.isEmpty()) {
                 transitions.add(String.format("s%d [Final]", state.id));
             }
         }
 
-        // ✅ Sort transitions (based on state number)
+        //Sort transitions (based on state number)
         Collections.sort(transitions, (a, b) -> {
             int stateA = Integer.parseInt(a.split(" ")[0].substring(1)); // Extract state number from "sX"
             int stateB = Integer.parseInt(b.split(" ")[0].substring(1));
             return Integer.compare(stateA, stateB);
         });
 
-        // ✅ Print sorted transitions
+        // Print  transitions
         for (String transition : transitions) {
             System.out.println(transition);
         }

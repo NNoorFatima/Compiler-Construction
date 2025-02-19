@@ -140,31 +140,6 @@ public class Main {
         return result;
     }
 
-    // Build NFA for Identifiers
-//    public static NFA buildIdentifierNFA() {
-//        // Identifier pattern: [a-z][a-z]*
-//        NFA firstLetter = NFA.union(
-//            NFA.createSimpleNFA('a',"identifier"), NFA.createSimpleNFA('b',"identifier"),
-//            NFA.createSimpleNFA('c',"identifier"), NFA.createSimpleNFA('d',"identifier"),
-//            NFA.createSimpleNFA('e',"identifier"), NFA.createSimpleNFA('f',"identifier"),
-//            NFA.createSimpleNFA('g',"identifier"), NFA.createSimpleNFA('h',"identifier"),
-//            NFA.createSimpleNFA('i',"identifier"), NFA.createSimpleNFA('j',"identifier"),
-//            NFA.createSimpleNFA('k',"identifier"), NFA.createSimpleNFA('l',"identifier"),
-//            NFA.createSimpleNFA('m',"identifier"), NFA.createSimpleNFA('n',"identifier"),
-//            NFA.createSimpleNFA('o',"identifier"), NFA.createSimpleNFA('p',"identifier"),
-//            NFA.createSimpleNFA('q',"identifier"), NFA.createSimpleNFA('r',"identifier"),
-//            NFA.createSimpleNFA('s',"identifier"), NFA.createSimpleNFA('t',"identifier"),
-//            NFA.createSimpleNFA('u',"identifier"), NFA.createSimpleNFA('v',"identifier"),
-//            NFA.createSimpleNFA('w',"identifier"), NFA.createSimpleNFA('x',"identifier"),
-//            NFA.createSimpleNFA('y',"identifier"), NFA.createSimpleNFA('z',"identifier")
-//        );
-//
-//        // Repeat for additional lowercase letters [a-z]*
-//        NFA repeat = NFA.kleeneStar(firstLetter);
-//
-//        // Concatenating first letter + repeated letters
-//        return NFA.concatenate(firstLetter, repeat);
-//    }
     public static NFA buildIdentifierNFA() {
        
         String identifierPattern = Lexer.GEtIdentifier(); // Get the regex for identifiers
@@ -199,7 +174,6 @@ public class Main {
         NFA repeat = NFA.kleeneStar(repeatChar);
         return NFA.concatenate(firstLetter, repeat);
     }
-
 
     // Check if the token is a variable declaration
     private static boolean isVariableDeclaration(Token token) {
@@ -268,9 +242,6 @@ public class Main {
         return result;
     }
     
-    
-
-
     // Build NFA for Strings
     public static NFA buildStringNFA() {
         // Start and End Quote
@@ -319,59 +290,6 @@ public class Main {
         return NFA.concatenate(quote, NFA.concatenate(repeatValidChar, quote));
     }
 
-//    public static NFA buildSnumberNFA() {
-//        // Number pattern: [0-9]+(\\.[0-9]+)?([eE][-+]?[0-9]+)?
-//        NFA digits = NFA.createSimpleNFA('0');  // Start with digit '0', can be extended to [0-9] or more digits
-//        NFA decimalPart = NFA.createSimpleNFA('.');  // Decimal point
-//        NFA exponent = NFA.createSimpleNFA('e');  // Exponent part ('e' or 'E')
-//
-//        NFA numberPart = NFA.createSimpleNFA('1');  // Basic representation of number part
-//        NFA repeatDigits = NFA.kleeneStar(NFA.createSimpleNFA('0')); // Digits repetition
-//        
-//        NFA exponentPart = NFA.kleeneStar(NFA.createSimpleNFA('0')); // Exponent part
-//        NFA numberNFA = NFA.concatenate(numberPart, repeatDigits);
-//
-//        // Concatenate Number -> Optional Decimal -> Optional Exponent
-//        NFA result = NFA.concatenate(numberNFA, NFA.kleeneStar(decimalPart));
-//        result = NFA.concatenate(result, NFA.kleeneStar(exponentPart));
-//
-//        return result;
-//    }
-
-//    public static NFA buildSnumberNFA() {
-//        // ✅ Step 1: Build the NFA for `[0-9]+`
-//        NFA digitNFA = null;
-//
-//        // ✅ Loop through all digits ('0' to '9') and create an NFA
-//        for (char digit = '0'; digit <= '9'; digit++) {
-//            if (digitNFA == null) {
-//                digitNFA = NFA.createSimpleNFA(digit,"Number");
-//            } else {
-//                digitNFA = NFA.union(digitNFA, NFA.createSimpleNFA(digit,"Number"));
-//            }
-//        }
-//
-//        // ✅ Step 2: Allow repetition of digits (for `[0-9]+`)
-//        NFA numberNFA = NFA.kleenePlus(digitNFA);  // At least one digit required
-//
-//        // ✅ Step 3: Handle optional decimal part `(\\.[0-9]+)?`
-//        NFA dot = NFA.createSimpleNFA('.',"Number");  // Decimal point
-//        NFA decimalPart = NFA.concatenate(dot, NFA.kleenePlus(digitNFA));  // `.123`, `3.14`
-//        
-//        // ✅ Step 4: Handle optional exponent part `([eE][-+]?[0-9]+)?`
-//        NFA ePart = NFA.union(NFA.createSimpleNFA('e',"Number"), NFA.createSimpleNFA('E',"Number")); // `e` or `E`
-//        
-//        NFA sign = NFA.union(NFA.createSimpleNFA('+',"Number"), NFA.createSimpleNFA('-',"Number"));  // `+` or `-`
-//        NFA signedExponent = NFA.concatenate(NFA.optional(sign), NFA.kleenePlus(digitNFA)); // `e+10`, `e-3`
-//        
-//        NFA exponentPart = NFA.concatenate(ePart, signedExponent);  // Full exponent handling
-//
-//        // ✅ Step 5: Combine the entire number pattern
-//        NFA result = NFA.concatenate(numberNFA, NFA.optional(decimalPart));  // `[0-9]+(\.[0-9]+)?`
-//        result = NFA.concatenate(result, NFA.optional(exponentPart));  // `[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?`
-//
-//        return result;
-//    }
     public static NFA buildSnumberNFA() {
   
     	
@@ -441,21 +359,6 @@ public class Main {
         return operatorNFA;
     }
 
-//    public static NFA buildSoperatorNFA() {
-//        // Operator pattern: [=+\\-*/%]
-//        NFA equal = NFA.createSimpleNFA('=',"Operator");
-//        NFA plus = NFA.createSimpleNFA('+',"Operator");
-//        NFA minus = NFA.createSimpleNFA('-',"Operator");
-//        NFA multiply = NFA.createSimpleNFA('*',"Operator");
-//        NFA divide = NFA.createSimpleNFA('/',"Operator");
-//        NFA modulus = NFA.createSimpleNFA('%',"Operator");
-//
-//        // Union of all operators
-//        NFA operatorNFA = NFA.union(equal, NFA.union(plus, NFA.union(minus, NFA.union(multiply, NFA.union(divide, modulus)))));
-//        
-//        return operatorNFA;
-//    }
-
     public static NFA buildSinglecommentNFA() {
         // Single-line comment pattern: \\byap\\b.*
         NFA commentKeyword = NFA.createSimpleNFA('y',"Comment");  // Starting character of 'yap' 
@@ -486,7 +389,6 @@ public class Main {
         
         return result;
     }
-
 
     
     public static NFA buildCombinedNFA() {

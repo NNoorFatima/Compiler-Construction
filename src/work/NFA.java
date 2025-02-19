@@ -74,7 +74,7 @@ class NFA {
         return new NFA(newStart, newEnd);
     }
 
-    // ✅ **NEW: kleenePlus() (Matches at least once, then repeats)**
+   
     public static NFA kleenePlus(NFA nfa) {
         State newStart = new State(stateCounter++);
         State newEnd = new State(stateCounter++);
@@ -87,7 +87,7 @@ class NFA {
         return new NFA(newStart, newEnd);
     }
 
-    // ✅ **NEW: optional() (Matches once or skips)**
+    
     public static NFA optional(NFA nfa) {
         State newStart = new State(stateCounter++);
         State newEnd = new State(stateCounter++);
@@ -101,7 +101,7 @@ class NFA {
         return new NFA(newStart, newEnd);
     }
 
-    // ✅ **Improved Display (Sorted Output)**
+   
     public void displayNFA() {
         System.out.println("\n=== NFA Transitions (Sorted) ===");
         Set<State> visited = new HashSet<>();
@@ -126,7 +126,7 @@ class NFA {
             }
         }
 
-        // ✅ Sort states before printing their transitions
+        
         allStates.sort(Comparator.comparingInt(s -> s.id));
 
         for (State state : allStates) {
