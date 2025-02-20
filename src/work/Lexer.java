@@ -12,13 +12,11 @@ public class Lexer {
     public static final String PUNCTUATOR = "[(){}!,]";
     public static final String COMMENT_SINGLE = "\\byap\\b.*";  
     public static final String COMMENT_MULTI = ":p[\\s\\S]*?:p";  
-
     private static final Pattern TOKEN_PATTERN = Pattern.compile(
         COMMENT_MULTI + "|" + COMMENT_SINGLE + "|" + KEYWORDS + "|" + IDENTIFIER + "|" + 
         NUMBER + "|" + STRING + "|" + OPERATOR + "|" + PUNCTUATOR
     );
 
-    // Getter methods for each constant
     public static String GEtKeyword() {
         return KEYWORDS;
     }
@@ -56,13 +54,11 @@ public class Lexer {
         Matcher matcher = TOKEN_PATTERN.matcher(input);
         int lineNumber = 1;
 
-        // Track the tokens that are successfully matched
         int lastEnd = 0;
 
         while (matcher.find()) {
             String token = matcher.group();
             
-            //  Check if any part of input is skipped (unmatched tokens)
             if (matcher.start() > lastEnd) {
                 String invalidToken = input.substring(lastEnd, matcher.start()).trim();
                 if (!invalidToken.isEmpty()) {
@@ -91,14 +87,11 @@ public class Lexer {
                 System.out.println("Syntax Error: Invalid token '" + token + "'");
                 System.exit(1);
             }
-
-            //  Update line number if token contains a newline
             if (token.contains("\n")) {
                 lineNumber++;
             }
         }
 
-        //  Final check for trailing unmatched input
         if (lastEnd < input.length()) {
             String invalidToken = input.substring(lastEnd).trim();
             if (!invalidToken.isEmpty()) {
@@ -106,8 +99,6 @@ public class Lexer {
                 System.exit(1);
             }
         }
-
         return tokens;
     }
-
 }

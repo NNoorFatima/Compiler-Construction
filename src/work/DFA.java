@@ -15,7 +15,6 @@ class DFA {
             this.tokenType = tokenType;
         }
     }
-
     private DFAState startState;
     private final Map<Set<State>, DFAState> dfaStates = new HashMap<>();
     private int stateCounter = 0;
@@ -113,14 +112,12 @@ class DFA {
             }
         }
 
-        //Sort transitions (based on state number)
         Collections.sort(transitions, (a, b) -> {
-            int stateA = Integer.parseInt(a.split(" ")[0].substring(1)); // Extract state number from "sX"
+            int stateA = Integer.parseInt(a.split(" ")[0].substring(1)); 
             int stateB = Integer.parseInt(b.split(" ")[0].substring(1));
             return Integer.compare(stateA, stateB);
         });
 
-        // Print  transitions
         for (String transition : transitions) {
             System.out.println(transition);
         }

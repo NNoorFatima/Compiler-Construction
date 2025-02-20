@@ -4,7 +4,6 @@ import java.util.Objects;
 		
 public class Token {
     public enum Type { KEYWORD, IDENTIFIER, NUMBER, STRING, OPERATOR, PUNCTUATOR, COMMENT, ERROR, EOF }
-
     private final Type type;
     private final String value;
 
@@ -12,8 +11,7 @@ public class Token {
         this.type = type;
         this.value = value;
     }
-
-    // ✅ Fix: Add getType() method
+    
     public Type getType() {
         return type;
     }

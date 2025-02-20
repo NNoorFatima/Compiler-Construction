@@ -27,35 +27,32 @@ public class Main {
         // Call newly created functions
         //System.out.println("\nCreating NFA for Numbers.");
         NFA numberNFA = buildSnumberNFA();
-        //numberNFA.displayNFA();  // Display the NFA for numbers
+        //numberNFA.displayNFA();  
         
         //System.out.println("\nCreating NFA for Operators.");
         NFA operatorNFA = buildSoperatorNFA();
-        //operatorNFA.displayNFA();  // Display the NFA for operators
+        //operatorNFA.displayNFA();
         
         //System.out.println("\nCreating NFA for Single-line Comments.");
         NFA singleCommentNFA = buildSinglecommentNFA();
-        //singleCommentNFA.displayNFA();  // Display the NFA for single-line comments
+        //singleCommentNFA.displayNFA();  
         
         //System.out.println("\nCreating NFA for Multi-line Comments.");
         NFA multiCommentNFA = buildMulticommentNFA();
-        //multiCommentNFA.displayNFA();  // Display the NFA for multi-line comments
+        //multiCommentNFA.displayNFA();  
         
         System.out.println("\nCreating Combined NFA for all tokens.");
         NFA combinedNFA = buildCombinedNFA();
-        combinedNFA.displayNFA();  // Assuming the NFA class has a display method
+        combinedNFA.displayNFA();
         
         System.out.println("\n");
 
-        //Convert NFA to DFA
         System.out.println("\n Converting Combined NFA --> DFA.");
         DFA dfa = new DFA(combinedNFA);
 
-        //Transition Table
         System.out.println("\n Printing DFA Transition Table...");
         dfa.printDFA();
         System.out.println("\n ");
-        
         
         String relativePath = "D:\\eclispe\\Compiler-Construction\\src\\input.sn";
         File file = new File(relativePath);
@@ -115,9 +112,8 @@ public class Main {
         }
     }
 		
-    // Build NFA for Keywords
     public static NFA buildKeywordNFA() {
-        String keywordsPattern = Lexer.GEtKeyword(); // Using the getter method from Lexer
+        String keywordsPattern = Lexer.GEtKeyword(); 
         NFA result = null;
 
         Pattern pattern = Pattern.compile(keywordsPattern);
@@ -142,15 +138,14 @@ public class Main {
 
     public static NFA buildIdentifierNFA() {
        
-        String identifierPattern = Lexer.GEtIdentifier(); // Get the regex for identifiers
+        String identifierPattern = Lexer.GEtIdentifier(); 
         NFA firstLetter = null;
-        for (char c = 'a'; c <= 'z'; c++) { // Covers lowercase letters
+        for (char c = 'a'; c <= 'z'; c++) {
             if (String.valueOf(c).matches(identifierPattern)) { 
                 NFA charNFA = NFA.createSimpleNFA(c, "identifier");
                 firstLetter = (firstLetter == null) ? charNFA : NFA.union(firstLetter, charNFA);
             }
         }
-        //  case where no first letters were found
         if (firstLetter == null) {
             System.out.println(" No valid first-letter characters found for Identifiers!");
             return null;
@@ -164,43 +159,33 @@ public class Main {
             }
         }
 
-        // case where no repeatable characters were found
         if (repeatChar == null) {
             System.out.println(" No valid repeatable characters found for Identifiers!");
-            repeatChar = firstLetter; // Fallback to first-letter characters
+            repeatChar = firstLetter; 
         }
-
-      //Kleene Star 
+ 
         NFA repeat = NFA.kleeneStar(repeatChar);
         return NFA.concatenate(firstLetter, repeat);
     }
-
-    // Check if the token is a variable declaration
     private static boolean isVariableDeclaration(Token token) {
         return token.getType() == Token.Type.KEYWORD && "poora".equals(token.getValue());
     }
-
-    // Extract global and local variables based on function scope
     private static void extractVariables(List<Token> tokens, int startIndex, boolean foundMain,
                                          Set<String> globalVariables, Set<String> localVariables) {
         int j = startIndex;
         while (j < tokens.size()) {
             Token currentToken = tokens.get(j);
-
-            // Stop on special characters like "!" (end of declaration)
             if (currentToken.getValue().equals("!")) {
                 break;
             }
 
-            // Only process IDENTIFIERS as variables
             if (currentToken.getType() == Token.Type.IDENTIFIER) {
                 String varName = currentToken.getValue();
 
-                // Don't classify function names as variables
                 if (!varName.equals("main")) {
-                    if (!foundMain) { // If we haven't reached main, it's GLOBAL
+                    if (!foundMain) { 
                         globalVariables.add(varName);
-                    } else { // After main, it's LOCAL
+                    } else {
                         localVariables.add(varName);
                     }
                 }
@@ -209,7 +194,6 @@ public class Main {
         }
     }
 
-    // Method to read the file content
     private static String readFile(String filename) throws IOException {
         StringBuilder content = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
@@ -221,20 +205,17 @@ public class Main {
         return content.toString();
     }
     
- // Build NFA for Punctuators
     public static NFA buildPunctuatorNFA() {
-        // Punctuators pattern: We are considering a few common punctuation marks (can extend as needed)
         //String punctuatorsPattern = "[+\\-*/%=<>!\\^&|,;:.(){}\\[\\]]";
         String punctuatorsPattern =Lexer.GEtPunctuator();
         NFA result = null;
 
-        // Iterate through each punctuator
         Pattern pattern = Pattern.compile(punctuatorsPattern);
         Matcher matcher = pattern.matcher(punctuatorsPattern);
 
         while (matcher.find()) {
             String punctuator = matcher.group();
-            NFA punctuatorNFA = NFA.createSimpleNFA(punctuator.charAt(0),"punctuator"); // Each punctuator is a single character NFA
+            NFA punctuatorNFA = NFA.createSimpleNFA(punctuator.charAt(0),"punctuator"); 
 
             result = (result == null) ? punctuatorNFA : NFA.union(result, punctuatorNFA);
         }
@@ -242,12 +223,8 @@ public class Main {
         return result;
     }
     
-    // Build NFA for Strings
     public static NFA buildStringNFA() {
-        // Start and End Quote
         NFA quote = NFA.createSimpleNFA('\"',"String");
-
-        // Valid string characters: a-z, 0-9, punctuation, space
         NFA validChar = NFA.union(
             NFA.createSimpleNFA('a',"String"), NFA.createSimpleNFA('b',"String"),
             NFA.createSimpleNFA('c',"String"), NFA.createSimpleNFA('d',"String"),
@@ -279,22 +256,18 @@ public class Main {
             NFA.createSimpleNFA(',',"String"), NFA.createSimpleNFA('.',"String"),
             NFA.createSimpleNFA('?',"String"), NFA.createSimpleNFA('/',"String"),
             NFA.createSimpleNFA('\\',"String"), NFA.createSimpleNFA('|',"String"),
-            NFA.createSimpleNFA(' ',"String"),  // Space inside string
-            NFA.createSimpleNFA(':',"String")   // Colon for file paths
+            NFA.createSimpleNFA(' ',"String"),  
+            NFA.createSimpleNFA(':',"String")  
         );
-
-        // Repeat any valid character inside the string
         NFA repeatValidChar = NFA.kleeneStar(validChar);
-
-        // Concatenating: Start quote → Content → End quote
         return NFA.concatenate(quote, NFA.concatenate(repeatValidChar, quote));
     }
 
     public static NFA buildSnumberNFA() {
   
     	
-        String numberPattern = Lexer.GEtNumber(); // Extract regex for numbers
-        // 0-9
+        String numberPattern = Lexer.GEtNumber();
+        
         NFA digitNFA = null;
         for (char c = '0'; c <= '9'; c++) { 
             if (String.valueOf(c).matches(numberPattern)) { 
@@ -302,27 +275,22 @@ public class Main {
                 digitNFA = (digitNFA == null) ? charNFA : NFA.union(digitNFA, charNFA);
             }
         }
-        // case where no digits were matched
         if (digitNFA == null) {
             System.out.println("⚠️ Warning: No valid digits found for Number NFA!");
             return null;
         }
 
-        // repetition  [0-9]+
         NFA numberNFA = NFA.kleenePlus(digitNFA);
-        // decimal part `(\\.[0-9]+)?`
         NFA decimalPart = null;
         if (numberPattern.contains(".")) { 
             NFA dot = NFA.createSimpleNFA('.', "Number");
             decimalPart = NFA.concatenate(dot, NFA.kleenePlus(digitNFA)); 
         }
 
-        //exponent part `([eE][-+]?[0-9]+)?`
         NFA exponentPart = null;
         if (numberPattern.contains("e") || numberPattern.contains("E")) { 
             NFA ePart = NFA.union(NFA.createSimpleNFA('e', "Number"), NFA.createSimpleNFA('E', "Number"));
             NFA sign = null;
-            //sign
             if (numberPattern.contains("+") || numberPattern.contains("-")) 
                 sign = NFA.union(NFA.createSimpleNFA('+', "Number"), NFA.createSimpleNFA('-', "Number"));
             
@@ -330,7 +298,6 @@ public class Main {
                     NFA.concatenate(NFA.optional(sign), NFA.kleenePlus(digitNFA));
             exponentPart = NFA.concatenate(ePart, signedExponent);
         }
-        //merge
         NFA result = numberNFA;
         if (decimalPart != null) result = NFA.concatenate(result, NFA.optional(decimalPart)); 
         if (exponentPart != null) result = NFA.concatenate(result, NFA.optional(exponentPart)); 
@@ -340,9 +307,7 @@ public class Main {
 
     public static NFA buildSoperatorNFA() {
        
-        String operatorPattern = Lexer.GEtOperator(); // regex for operators
-
-        // NFA for each operator character
+        String operatorPattern = Lexer.GEtOperator(); 
         NFA operatorNFA = null;
         for (char c = 33; c <= 126; c++) { 
             if (String.valueOf(c).matches(operatorPattern)) { 
@@ -350,7 +315,6 @@ public class Main {
                 operatorNFA = (operatorNFA == null) ? charNFA : NFA.union(operatorNFA, charNFA);
             }
         }
-        //case where no valid operators were found
         if (operatorNFA == null) {
             System.out.println("No valid operators found for Operator NFA!");
             return null;
@@ -360,29 +324,25 @@ public class Main {
     }
 
     public static NFA buildSinglecommentNFA() {
-        // Single-line comment pattern: \\byap\\b.*
-        NFA commentKeyword = NFA.createSimpleNFA('y',"Comment");  // Starting character of 'yap' 
-        NFA moreChars = NFA.createSimpleNFA('a',"Comment");  // Subsequent 'a' 
-        NFA finalChar = NFA.createSimpleNFA('p',"Comment");  // Final 'p' of 'yap'
+        NFA commentKeyword = NFA.createSimpleNFA('y',"Comment");  
+        NFA moreChars = NFA.createSimpleNFA('a',"Comment"); 
+        NFA finalChar = NFA.createSimpleNFA('p',"Comment");  
 
         NFA commentStart = NFA.concatenate(NFA.concatenate(commentKeyword, moreChars), finalChar);
-        NFA anyChar = NFA.createSimpleNFA('.',"Comment"); // Any character in the comment
-        NFA repeat = NFA.kleeneStar(anyChar);  // Zero or more characters after the comment start
-
-        // Concatenate comment start -> zero or more characters in the comment
+        NFA anyChar = NFA.createSimpleNFA('.',"Comment"); 
+        NFA repeat = NFA.kleeneStar(anyChar);  
         return NFA.concatenate(commentStart, repeat);
     }
 
     public static NFA buildMulticommentNFA() {
-        // Multi-line comment pattern: :p[\\s\\S]*?:p
         NFA startComment = NFA.createSimpleNFA(':',"Comment");
-        NFA pStart = NFA.createSimpleNFA('p',"Comment"); // Comment start ':p'
+        NFA pStart = NFA.createSimpleNFA('p',"Comment");
 
-        NFA spaceOrAnyChar = NFA.createSimpleNFA('.',"Comment");  // Match any character or whitespace
-        NFA commentBody = NFA.kleeneStar(spaceOrAnyChar);  // Zero or more characters in comment
+        NFA spaceOrAnyChar = NFA.createSimpleNFA('.',"Comment");  
+        NFA commentBody = NFA.kleeneStar(spaceOrAnyChar); 
 
         NFA endComment = NFA.createSimpleNFA(':',"Comment");
-        NFA pEnd = NFA.createSimpleNFA('p',"Comment"); // Comment end ':p'
+        NFA pEnd = NFA.createSimpleNFA('p',"Comment");
 
         // Concatenate startComment + commentBody + endComment
         NFA result = NFA.concatenate(startComment, NFA.concatenate(pStart, NFA.concatenate(commentBody, NFA.concatenate(endComment, pEnd))));
@@ -390,9 +350,7 @@ public class Main {
         return result;
     }
 
-    
     public static NFA buildCombinedNFA() {
-        // Create individual NFAs
         NFA keywordNFA = buildKeywordNFA();
         NFA identifierNFA = buildIdentifierNFA();
         NFA numberNFA = buildSnumberNFA();
@@ -402,7 +360,6 @@ public class Main {
         NFA singleCommentNFA = buildSinglecommentNFA();
         NFA multiCommentNFA = buildMulticommentNFA();
         
-        // Combine all NFAs into one using the union operator
         NFA combinedNFA = NFA.union(
             keywordNFA,
             NFA.union(
@@ -428,7 +385,4 @@ public class Main {
 
         return combinedNFA;
     }
-
-
-
 }
