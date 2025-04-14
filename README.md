@@ -1,10 +1,10 @@
 # Compiler-Construction
-keywords are 
-poora for int
-out for cout
-in for cin
-adha for double
-HN for bool
-bakk for string
-ek for char
-wafis for return 
+keywords are <br>
+poora for int <br>
+out for cout <br>
+in for cin <br>
+adha for double <br>
+HN for bool <br>
+bakk for string <br>
+ek for char <br>
+wafis for return <br> 
